@@ -74,7 +74,7 @@ You can find the profile name in the [developer account profile list](https://de
 6. You should now be able to build the project locally the same way it will be built in the action, verify that it is the case:
 
 ```
-flutter build ipa --release --export-options-plist ios/GithubActionsExportOptions.plist
+flutter build ipa --release --no-codesign --export-options-plist=ios/GithubActionsExportOptions.plist
 ```
 
 
@@ -97,22 +97,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: cedvdb/action-flutter-build-ios@v1
+      - uses: madz/flutter-build-ios-additional-provision@v1.0.0
         with:
           # always use --export-options-plist=ios/GithubActionsExportOptions.plist
-          build-cmd: flutter build ipa --release --flavor dev --export-options-plist=ios/GithubActionsExportOptions.plist
+          build-cmd: flutter build ipa --release --no-codesign --export-options-plist=ios/GithubActionsExportOptions.plist
           certificate-base64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
           certificate-password: ${{ secrets.IOS_BUILD_CERTIFICATE_PASSWORD }}
           keychain-password: ${{ secrets.IOS_GITHUB_KEYCHAIN_PASSWORD }}
           provisioning-profile-base64: ${{ secrets.IOS_MOBILE_PROVISIONING_PROFILE_BASE64 }}
           additional-provisioning-profile-base64: ${{ secrets.ADDITIONAL_PROVISIONING_PROFILE_BASE64 }}
 
-      - name: Archive IPA
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-ipa
-          # Try running the build locally with the build command to be sure of this path
-          path: build/ios/ipa/App-dev.ipa
-```
 
 Note: when using the build-cmd, use the `--export-options-plist=ios/GithubActionsExportOptions.plist` argument, so it uses the export option created in step #3.
