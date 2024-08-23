@@ -100,11 +100,11 @@ runs:
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
         
-        # use add_uuid for the name of provisioning profile
-        ADD_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< $(/usr/bin/security cms -D -i $ADDITIONAL_PP_PATH))
-
-        # apply provisioning profile
-        cp $ADDITIONAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$ADD_UUID.mobileprovision
+        # Extract the UUID for the additional provisioning profile, if provided
+        if [ -n "$ADDITIONAL_PROVISIONING_PROFILE_BASE64" ]; then
+          ADD_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< $(/usr/bin/security cms -D -i $ADDITIONAL_PP_PATH))
+          cp $ADDITIONAL_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$ADD_UUID.mobileprovision
+        fi
 
     - name: List profiles
       run: cd ~/Library/MobileDevice/Provisioning\ Profiles && ls
