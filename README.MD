@@ -44,6 +44,7 @@ and add those values to your github repository secrets. The keychain password ca
 - IOS_BUILD_CERTIFICATE_PASSWORD : This is the password for certificate.p12
 - IOS_GITHUB_KEYCHAIN_PASSWORD : A random string of your choosing
 - IOS_MOBILE_PROVISIONING_PROFILE_BASE64 : The base64 version of your.mobileprovision file
+- ADDITIONAL_PROVISIONING_PROFILE_BASE64 : The base64 version of your.mobileprovision file
 
 # 3. Build locally
 
@@ -60,7 +61,9 @@ Follow this step closely:
 <key>provisioningProfiles</key>
 <dict>
   <key>com.myapp.app.dev</key>
-  <string>{{ YOUR PROFIL NAME }}</string>
+  <string>{{ YOUR PROFILE NAME }}</string>
+   <key>com.myapp.app.another-dev</key>
+  <string>{{ ADDITIONAL PROFILE NAME }}</string>
 </dict>
 ```
 
@@ -100,8 +103,9 @@ jobs:
           build-cmd: flutter build ipa --release --flavor dev --export-options-plist=ios/GithubActionsExportOptions.plist
           certificate-base64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
           certificate-password: ${{ secrets.IOS_BUILD_CERTIFICATE_PASSWORD }}
-          provisioning-profile-base64: ${{ secrets.IOS_MOBILE_PROVISIONING_PROFILE_BASE64 }}
           keychain-password: ${{ secrets.IOS_GITHUB_KEYCHAIN_PASSWORD }}
+          provisioning-profile-base64: ${{ secrets.IOS_MOBILE_PROVISIONING_PROFILE_BASE64 }}
+          additional-provisioning-profile-base64: ${{ secrets.ADDITIONAL_PROVISIONING_PROFILE_BASE64 }}
 
       - name: Archive IPA
         uses: actions/upload-artifact@v2

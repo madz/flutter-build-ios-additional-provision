@@ -27,7 +27,7 @@ inputs:
     description: "random string in secrets"
     required: true
   additional-provisioning-profile-base64:
-    description: "Path to an additional provisioning profile, if applicable"
+    description: "base64 of additional provisioning profile, if applicable"
     required: false
 
 runs:
